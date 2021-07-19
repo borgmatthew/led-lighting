@@ -1,8 +1,9 @@
 #include "LedLighting.h"
 
-LedLighting::LedLighting(unsigned long inactivityPeriod, Animation* animation) {
+LedLighting::LedLighting(unsigned long inactivityPeriod, Animation* animation, ColourProvider* colourProvider) {
     this -> _inactivityPeriod = inactivityPeriod;
     this -> _animation = animation;
+    this -> _colourProvider = colourProvider;
     _state = AnimationState::TURNING_OFF;
 }
 
@@ -15,14 +16,14 @@ void LedLighting::loop() {
         unsigned long now = millis();
         unsigned long elapsed_time = now - _lastMotion;
         if (elapsed_time > _inactivityPeriod && _state != AnimationState::TURNING_OFF) {
-            this->_animation -> turnOff();
+            this->_animation -> turnOff(_colourProvider);
             _state = AnimationState::TURNING_OFF;
         } else if (elapsed_time < _inactivityPeriod && _state != AnimationState::TURNING_ON) {
-            this -> _animation -> turnOn();
+            this -> _animation -> turnOn(_colourProvider);
             _state = AnimationState::TURNING_ON;
         }
 
-        this -> _animation -> loop();
+        this -> _animation -> loop(_colourProvider);
     }
 }
 
@@ -41,4 +42,8 @@ void LedLighting::setInactivityPeriod(unsigned long inactivityPeriod) {
 
 unsigned long LedLighting::getInactivityPeriod() {
     return _inactivityPeriod;
+}
+
+void LedLighting::setColourProvider(ColourProvider *colourProvider) {
+    this -> _colourProvider = colourProvider;
 }

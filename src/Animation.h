@@ -2,12 +2,13 @@
 #define LIBRARIES_ANIMATION_H
 
 #include <Arduino.h>
+#include "ColourProvider.h"
 
 class Animation {
 public:
-    virtual void turnOn() = 0;
-    virtual void turnOff() = 0;
-    virtual void loop() = 0;
+    virtual void turnOn(ColourProvider* colourProvider) = 0;
+    virtual void turnOff(ColourProvider* colourProvider) = 0;
+    virtual void loop(ColourProvider* colourProvider) = 0;
     virtual void resetAnimation() = 0;
 };
 
